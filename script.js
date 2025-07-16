@@ -1,4 +1,30 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // --- LOGIKA UNTUK POPUP MODAL - KODE BARU DIMULAI DI SINI ---
+  const warningModal = document.getElementById("warningModal");
+  const closeModalBtn = document.getElementById("closeModalBtn");
+
+  // Fungsi untuk menutup modal
+  const closeModal = () => {
+    if (warningModal) {
+      warningModal.classList.add("hidden");
+    }
+  };
+
+  // Event listener untuk tombol close
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener("click", closeModal);
+  }
+
+  // Event listener untuk klik di luar area modal (di background gelap)
+  if (warningModal) {
+    warningModal.addEventListener("click", (event) => {
+      if (event.target === warningModal) {
+        closeModal();
+      }
+    });
+  }
+  // --- KODE BARU BERAKHIR DI SINI ---
+
   // --- Inisialisasi Elemen ---
   const addItemBtn = document.getElementById("addItemBtn");
   const itemsContainer = document.getElementById("itemsContainer");
@@ -58,9 +84,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const companyAddress = document.getElementById("companyAddress").value.replace(/\n/g, "<br>");
     const clientAddress = document.getElementById("clientAddress").value.replace(/\n/g, "<br>");
     const invoiceNumber = document.getElementById("invoiceNumber").value;
-    const invoiceDate = document.getElementById("invoiceDate").value;
+    // Mengambil tanggal dalam format YYYY-MM-DD
+    const rawDate = document.getElementById("invoiceDate").value;
+    let invoiceDate = rawDate; // Nilai default jika tanggal kosong
+
+    // Jika ada tanggal, format ulang ke DD-MM-YYYY
+    if (rawDate) {
+      const parts = rawDate.split("-"); // Pecah menjadi [YYYY, MM, DD]
+      invoiceDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // Susun ulang menjadi DD-MM-YYYY
+    }
     const pembayaranAwal = parseFloat(document.getElementById("pembayaranAwal").value) || 0;
-    // PERUBAHAN DI SINI: Ambil data dari textarea pesan
     const paymentInstructions = document.getElementById("paymentInstructions").value.replace(/\n/g, "<br>");
 
     let itemsHtml = "";
@@ -96,7 +129,6 @@ document.addEventListener("DOMContentLoaded", function () {
     template = template.replace("{{pembayaranAwal}}", pembayaranAwal.toLocaleString("id-ID"));
     template = template.replace("{{sisaTagihan}}", sisaTagihan.toLocaleString("id-ID"));
     template = template.replace("{{total}}", sisaTagihan.toLocaleString("id-ID"));
-    // PERUBAHAN DI SINI: Ganti placeholder pesan
     template = template.replace("{{paymentInstructions}}", paymentInstructions);
 
     invoicePreview.innerHTML = template;
