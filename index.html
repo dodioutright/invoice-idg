@@ -8,18 +8,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 p-8">
+<body class="bg-gray-100 p-4 md:p-8">
     <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h1 class="text-2xl font-bold mb-6">Invoice Generator</h1>
+        <h1 class="text-2xl font-bold mb-6 text-center md:text-left">Invoice Generator</h1>
 
-        <h2 class="text-xl font-semibold mb-2">Informasi Perusahaan & Logo</h2>
-        <div class="grid grid-cols-2 gap-4 mb-4">
+        <h2 class="text-xl font-semibold mb-2">Informasi Perusahaan & Klien</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <textarea id="companyAddress" placeholder="Alamat Perusahaan&#10;Telp: 08xx xxxx xxxx"
-                class="p-2 border rounded col-span-1" rows="4">Jl. Cibarengkok No.29, Sukabungah
+                class="p-2 border rounded" rows="4">Jl. Cibarengkok No.29, Sukabungah
 Kota Bandung - Jawa Barat 40162
 Telp : 0878 8100 0098</textarea>
             <textarea id="clientAddress" placeholder="Tagihan Kepada:&#10;Nama Klien&#10;Alamat Klien"
-                class="p-2 border rounded col-span-1" rows="4">dr. Benny Gunawan Sp.B
+                class="p-2 border rounded" rows="4">dr. Benny Gunawan Sp.B
 RSUP Dr. Hasan Sadikin Bandung
 Telp : 0821-1002-0359</textarea>
         </div>
@@ -31,30 +31,33 @@ Telp : 0821-1002-0359</textarea>
         </div>
 
         <h2 class="text-xl font-semibold mb-2">Detail Invoice</h2>
-        <div class="grid grid-cols-2 gap-4 mb-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <input type="text" id="invoiceNumber" placeholder="Nomor Invoice (e.g., INV-2025-0073)"
                 class="p-2 border rounded">
             <input type="date" id="invoiceDate" class="p-2 border rounded">
         </div>
 
         <h2 class="text-xl font-semibold mb-2">Item Tagihan</h2>
-        <div id="itemsContainer" class="mb-4"></div>
+        <div id="itemsContainer" class="mb-4 space-y-4">
+        </div>
         <button id="addItemBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Tambah Item</button>
 
         <h2 class="text-xl font-semibold mb-2 mt-6">Total & Pesan</h2>
-        <div class="grid grid-cols-2 gap-4 mb-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <input type="number" id="pembayaranAwal" placeholder="Pembayaran Awal" class="p-2 border rounded">
-            <textarea id="paymentInstructions" class="p-2 border rounded col-span-2" rows="4"
+            <textarea id="paymentInstructions" class="p-2 border rounded md:col-span-2" rows="4"
                 placeholder="Pesan :&#10;Silahkan transfer ke rekening :&#10;BCA 8480371683&#10;a/n Nama Anda">Silahkan transfer ke rekening :
 BCA 8480371683
 a/n Dodi Irfan Nurdin</textarea>
         </div>
 
-        <div class="mt-6 flex space-x-4">
-            <button id="previewBtn" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600">Preview
+        <div class="mt-6 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+            <button id="previewBtn"
+                class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 w-full sm:w-auto">Preview
                 Invoice</button>
             <button id="generatePdfBtn"
-                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 hidden">Generate PDF</button>
+                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 hidden w-full sm:w-auto">Generate
+                PDF</button>
         </div>
     </div>
 
