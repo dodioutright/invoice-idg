@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+</head>
+
+<body class="bg-slate-900 text-white min-h-screen px-4 py-8 md:px-6">
+    <div class="max-w-4xl mx-auto backdrop-blur-3xl bg-white/5 rounded-3xl overflow-hidden border border-white/10 shadow-2xl relative">
+        <!-- Glow effects -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
+
+        <!-- Header -->
+        <header class="p-8 md:p-10 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div>
+                    <img alt="Company Logo" class="h-12 object-contain mb-4 bg-white/10 rounded px-2" src="{{logoSrc}}" />
+                    <div class="flex items-center gap-3">
+                        <div class="h-8 w-1 bg-gradient-to-b from-cyan-400 to-purple-500 rounded-full"></div>
+                        <div>
+                            <h1 class="text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">INVOICE</h1>
+                            <p class="text-slate-400 text-sm font-mono">ID: <span class="text-white">{{invoiceNumber}}</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md">
+                     <p class="text-cyan-400 text-xs font-bold uppercase tracking-wider mb-1">Date Issued</p>
+                     <p class="text-xl font-bold font-mono">{{invoiceDate}}</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent my-2"></div>
+
+        <!-- Address Info -->
+        <section class="p-8 md:p-10 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="space-y-2">
+                    <p class="text-purple-400 text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-purple-400"></span> From
+                    </p>
+                    <div class="text-slate-300 leading-relaxed pl-4 border-l border-white/10">{{companyAddress}}</div>
+                </div>
+                <div class="space-y-2 md:text-right">
+                    <p class="text-cyan-400 text-xs font-bold uppercase tracking-widest flex items-center md:justify-end gap-2">
+                         To <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                    </p>
+                    <div class="text-slate-300 leading-relaxed md:pr-4 md:border-r border-l md:border-l-0 border-white/10 pl-4 md:pl-0">{{clientAddress}}</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Items Table -->
+        <section class="px-4 md:px-10 mb-8 relative z-10">
+            <div class="bg-white/5 rounded-2xl overflow-hidden border border-white/5">
+                <table class="w-full text-left border-collapse min-w-[500px]">
+                    <thead>
+                        <tr class="bg-white/5 text-slate-300 text-xs uppercase tracking-wider">
+                            <th class="p-4 font-bold border-b border-white/10">No</th>
+                            <th class="p-4 font-bold border-b border-white/10">Description</th>
+                            <th class="p-4 font-bold border-b border-white/10 text-center">Qty</th>
+                            <th class="p-4 font-bold border-b border-white/10 text-right">Price</th>
+                            <th class="p-4 font-bold border-b border-white/10 text-right">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm divide-y divide-white/5 text-slate-200">
+                        {{items}}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Summary & Totals -->
+        <section class="p-8 md:p-10 pt-0 relative z-10">
+            <div class="flex flex-col md:flex-row gap-8 items-start">
+                
+                <div class="flex-1 bg-white/5 rounded-2xl p-6 border border-white/5 w-full">
+                    <h3 class="text-cyan-400 font-bold uppercase text-xs tracking-widest mb-4">Payment Info</h3>
+                    <div class="text-slate-400 text-sm font-light leading-relaxed">
+                        {{paymentInstructions}}
+                    </div>
+                </div>
+
+                <div class="w-full md:w-96 space-y-4">
+                    <div class="flex justify-between items-center text-slate-400 text-sm">
+                        <span>Subtotal</span>
+                        <span class="text-white font-mono">Rp {{subtotal}}</span>
+                    </div>
+                     <div class="flex justify-between items-center text-emerald-400 text-sm">
+                        <span>Paid Amount</span>
+                        <span class="font-mono">- Rp {{pembayaranAwal}}</span>
+                    </div>
+                    
+                    <div class="relative mt-6 pt-6 group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        <div class="relative bg-white/5 border border-white/10 rounded-2xl p-6 flex justify-between items-center backdrop-blur-xl">
+                            <span class="font-bold uppercase tracking-wider text-sm">Total Due</span>
+                            <span class="font-bold text-2xl font-mono bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">Rp {{total}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="text-center pb-8 opacity-40 text-xs font-mono">
+            GENERATED BY IDGRAFIKA SYSTEM
+        </footer>
+    </div>
+</body>
+
+</html>

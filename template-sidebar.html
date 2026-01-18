@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            font-family: 'DM Sans', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100 text-slate-800">
+    <div class="max-w-4xl mx-auto bg-white shadow-xl overflow-hidden min-h-[1123px]">
+        <!-- MASTER LAYOUT TABLE -->
+        <table class="w-full h-full border-collapse">
+            <tr>
+                <!-- LEFT SIDEBAR (30%) -->
+                <td class="w-[30%] bg-slate-900 text-slate-300 align-top p-0">
+                    <div class="h-full flex flex-col p-8">
+                        <!-- Logo -->
+                        <div class="mb-12">
+                             <img alt="Company Logo" class="w-32 object-contain brightness-0 invert opacity-90" src="{{logoSrc}}" />
+                        </div>
+
+                        <!-- From Info -->
+                        <div class="mb-10">
+                            <p class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-4">Diterbitkan Oleh</p>
+                            <div class="text-sm leading-relaxed font-medium text-slate-400">
+                                {{companyAddress}}
+                            </div>
+                        </div>
+
+                        <!-- Payment Info in Sidebar -->
+                        <div class="mt-auto pt-8 border-t border-slate-800">
+                            <p class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-3">Pembayaran</p>
+                            <div class="text-xs leading-relaxed text-slate-400">
+                                {{paymentInstructions}}
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+                <!-- RIGHT CONTENT (70%) -->
+                <td class="w-[70%] align-top p-0">
+                    <div class="p-10 flex flex-col h-full">
+                        <!-- Header Right -->
+                        <div class="flex justify-between items-start mb-12">
+                            <div>
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Ditagihkan Kepada</p>
+                                <div class="text-base text-slate-900 font-bold leading-relaxed mb-1">{{clientAddress}}</div>
+                            </div>
+                            <div class="text-right">
+                                <h1 class="text-4xl font-bold text-slate-900 tracking-tight mb-2">INVOICE</h1>
+                                <p class="text-lg font-medium text-indigo-600">#{{invoiceNumber}}</p>
+                                <p class="text-sm text-slate-500 mt-1">{{invoiceDate}}</p>
+                            </div>
+                        </div>
+
+                        <!-- Items Table -->
+                        <div class="mb-10">
+                            <table class="w-full border-collapse text-sm">
+                                <thead>
+                                    <tr class="border-b-2 border-slate-100 text-slate-500">
+                                        <th class="py-3 text-left font-bold uppercase text-xs w-10">No</th>
+                                        <th class="py-3 text-left font-bold uppercase text-xs">Deskripsi</th>
+                                        <th class="py-3 text-center font-bold uppercase text-xs w-16">Qty</th>
+                                        <th class="py-3 text-right font-bold uppercase text-xs w-28">Harga</th>
+                                        <th class="py-3 text-right font-bold uppercase text-xs w-32">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-slate-700">
+                                    {{items}}
+                                </tbody>
+                            </table>
+                        </div>
+
+                         <!-- Summary Section -->
+                         <div class="mt-auto">
+                            <div class="flex justify-end">
+                                <div class="w-2/3">
+                                    <table class="w-full text-sm">
+                                        <tr class="border-b border-slate-100">
+                                            <td class="py-3 text-slate-500 font-medium">Subtotal</td>
+                                            <td class="py-3 text-right text-slate-800 font-bold">Rp {{subtotal}}</td>
+                                        </tr>
+                                        <tr class="border-b border-slate-100">
+                                            <td class="py-3 text-slate-500 font-medium">Pembayaran Awal</td>
+                                            <td class="py-3 text-right text-indigo-600 font-bold">- Rp {{pembayaranAwal}}</td>
+                                        </tr>
+                                        <tr class="border-b border-slate-100">
+                                            <td class="py-3 text-slate-500 font-medium">Sisa Tagihan</td>
+                                            <td class="py-3 text-right text-slate-800 font-bold">Rp {{sisaTagihan}}</td>
+                                        </tr>
+                                         <tr>
+                                            <td class="pt-6 text-lg font-bold text-slate-900">Total</td>
+                                            <td class="pt-6 text-right text-3xl font-bold text-indigo-600">Rp {{total}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

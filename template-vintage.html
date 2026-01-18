@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+    <style>
+        h1, h2, h3, .serif-head { font-family: 'Playfair Display', serif; }
+        body { font-family: 'Lora', serif; background-color: #fdfbf7; }
+        .paper-texture {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d6d3c9' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+
+<body class="paper-texture text-stone-800 px-4 py-8 md:px-8">
+    <div class="max-w-4xl mx-auto border sm:border-double border-stone-800/20 p-8 sm:p-12 relative bg-white/50 backdrop-blur-sm shadow-xl">
+        <!-- Corner Ornaments -->
+        <div class="absolute top-4 left-4 w-16 h-16 border-t-2 border-l-2 border-stone-800 opacity-20"></div>
+        <div class="absolute top-4 right-4 w-16 h-16 border-t-2 border-r-2 border-stone-800 opacity-20"></div>
+        <div class="absolute bottom-4 left-4 w-16 h-16 border-b-2 border-l-2 border-stone-800 opacity-20"></div>
+        <div class="absolute bottom-4 right-4 w-16 h-16 border-b-2 border-r-2 border-stone-800 opacity-20"></div>
+
+        <!-- Header -->
+        <header class="text-center mb-12 relative z-10">
+            <img alt="Company Logo" class="h-16 object-contain mx-auto mb-6 sepia opacity-80" src="{{logoSrc}}" />
+            <h1 class="text-5xl font-bold tracking-widest text-stone-900 mb-2">INVOICE</h1>
+            <div class="flex justify-center items-center gap-4 text-stone-600 italic">
+                <span>No. {{invoiceNumber}}</span>
+                <span class="w-1 h-1 bg-stone-400 rounded-full"></span>
+                <span>{{invoiceDate}}</span>
+            </div>
+            <div class="w-24 h-1 bg-stone-800 mx-auto mt-6 opacity-80"></div>
+            <div class="w-32 h-px bg-stone-800 mx-auto mt-1 opacity-40"></div>
+        </header>
+
+        <!-- Address Info -->
+        <section class="max-w-2xl mx-auto mb-16 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between gap-12 text-center md:text-left">
+                <div class="flex-1">
+                    <h3 class="serif-head font-bold text-lg mb-2 text-stone-900 border-b border-stone-300 pb-1 inline-block">From</h3>
+                    <div class="text-stone-700 leading-relaxed italic">{{companyAddress}}</div>
+                </div>
+                <div class="flex-1 md:text-right">
+                    <h3 class="serif-head font-bold text-lg mb-2 text-stone-900 border-b border-stone-300 pb-1 inline-block">To</h3>
+                    <div class="text-stone-700 leading-relaxed italic">{{clientAddress}}</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Items Table -->
+        <div class="mb-12 relative z-10">
+            <table class="w-full text-sm border-collapse">
+                <thead>
+                    <tr class="border-y-2 border-stone-800 text-stone-900">
+                        <th class="serif-head py-4 px-2 text-left font-bold uppercase tracking-widest">Item</th>
+                        <th class="serif-head py-4 px-2 text-center font-bold uppercase tracking-widest w-24">Qty</th>
+                        <th class="serif-head py-4 px-2 text-right font-bold uppercase tracking-widest w-32">Rate</th>
+                        <th class="serif-head py-4 px-2 text-right font-bold uppercase tracking-widest w-36">Amount</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-stone-200">
+                    {{items}}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="flex flex-col md:flex-row gap-12 relative z-10">
+            <!-- Payment & Notes -->
+            <div class="flex-1">
+                <h3 class="serif-head font-bold text-lg mb-3 text-stone-900">Payment Instructions</h3>
+                <div class="bg-stone-100 p-6 border border-stone-200 text-stone-600 text-sm italic leading-relaxed">
+                    {{paymentInstructions}}
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="w-full md:w-80">
+                <div class="space-y-3">
+                    <div class="flex justify-between items-end border-b border-stone-300 pb-2 border-dashed">
+                        <span class="serif-head text-stone-600">Subtotal</span>
+                        <span class="font-bold text-stone-800 text-lg">Rp {{subtotal}}</span>
+                    </div>
+                    <div class="flex justify-between items-end border-b border-stone-300 pb-2 border-dashed">
+                        <span class="serif-head text-stone-600">Paid</span>
+                        <span class="font-bold text-stone-800 text-lg">- Rp {{pembayaranAwal}}</span>
+                    </div>
+                    <div class="flex justify-between items-end border-b-4 border-double border-stone-800 pb-4 pt-2">
+                        <span class="serif-head text-xl font-bold text-stone-900">Total</span>
+                        <span class="serif-head text-2xl font-bold text-stone-900">Rp {{total}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="mt-16 text-center border-t border-stone-200 pt-8 opacity-60">
+             <p class="font-serif italic text-sm">Thank You</p>
+        </footer>
+    </div>
+</body>
+
+</html>

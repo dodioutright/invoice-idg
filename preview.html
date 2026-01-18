@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=800, initial-scale=1.0">
+    <title>Preview Invoice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background: #f1f5f9;
+            min-width: 800px;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Action Bar -->
+    <div class="no-print sticky top-0 bg-slate-900 text-white py-3 px-6 flex items-center justify-between shadow-lg z-50">
+        <div class="flex items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span class="font-semibold">Preview Invoice</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <button id="generatePdfBtn" class="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-medium px-5 py-2 rounded-lg transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Download PDF
+            </button>
+            <button onclick="window.close()" class="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-medium px-4 py-2 rounded-lg transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- Invoice Content -->
+    <div id="invoice-content" class="p-6">
+        <!-- Content will be injected here -->
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get invoice data from localStorage
+            const invoiceData = localStorage.getItem('invoicePreviewData');
+            const invoiceNumber = localStorage.getItem('invoiceNumber') || 'Invoice';
+            
+            if (invoiceData) {
+                document.getElementById('invoice-content').innerHTML = invoiceData;
+            } else {
+                document.getElementById('invoice-content').innerHTML = '<p class="text-center text-gray-500 py-20">Tidak ada data invoice. Silakan kembali ke halaman utama.</p>';
+            }
+
+            // Generate PDF with loading state
+            const pdfBtn = document.getElementById('generatePdfBtn');
+            pdfBtn.addEventListener('click', function() {
+                const invoiceContent = document.getElementById('invoice-content').innerHTML;
+                
+                // Show loading state
+                const originalContent = pdfBtn.innerHTML;
+                pdfBtn.disabled = true;
+                pdfBtn.classList.remove('bg-emerald-500', 'hover:bg-emerald-600');
+                pdfBtn.classList.add('bg-slate-500', 'cursor-wait');
+                pdfBtn.innerHTML = `
+                    <svg class="w-4 h-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Generating...
+                `;
+                
+                const opt = {
+                    margin: 0.5,
+                    filename: `Invoice-${invoiceNumber}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+                };
+
+                html2pdf().from(invoiceContent).set(opt).save().then(() => {
+                    // Reset button state
+                    pdfBtn.disabled = false;
+                    pdfBtn.classList.remove('bg-slate-500', 'cursor-wait');
+                    pdfBtn.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
+                    pdfBtn.innerHTML = originalContent;
+                }).catch(() => {
+                    // Reset on error too
+                    pdfBtn.disabled = false;
+                    pdfBtn.classList.remove('bg-slate-500', 'cursor-wait');
+                    pdfBtn.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
+                    pdfBtn.innerHTML = originalContent;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

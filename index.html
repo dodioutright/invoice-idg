@@ -4,86 +4,334 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice Generator</title>
+    <title>Invoice Generator | IDGrafika</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
     <style>
-        body {
+        * {
             font-family: 'Inter', sans-serif;
+        }
+
+        /* Subtle animations */
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Input focus ring */
+        .input-modern:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        /* Button hover effect */
+        .btn-hover:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-hover:active {
+            transform: translateY(0);
+        }
+
+        /* Glassmorphism card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
         }
     </style>
 </head>
 
-<body class="bg-gray-100 p-4 md:p-8">
-    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h1 class="text-2xl font-bold mb-6 text-center md:text-left">Invoice Generator</h1>
+<body class="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-white">
+    <!-- Header -->
+    <header class="bg-slate-900 text-white py-4 px-6 shadow-lg">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight">Invoice Generator</h1>
+                    <p class="text-xs text-slate-400">by IDGrafika</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button id="historyBtn" class="flex items-center gap-1.5 bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium px-3 py-2 rounded-lg transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="hidden sm:inline">Riwayat</span>
+                </button>
+                <button id="clearFormBtn" class="flex items-center gap-1.5 bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white text-sm font-medium px-3 py-2 rounded-lg transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    <span class="hidden sm:inline">Bersihkan</span>
+                </button>
+            </div>
+        </div>
+    </header>
 
-        <h2 class="text-xl font-semibold mb-2">Informasi Perusahaan & Klien</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <textarea id="companyAddress" placeholder="Alamat Perusahaan&#10;Telp: 08xx xxxx xxxx"
-                class="p-2 border rounded" rows="4">Jl. Cibarengkok No.29, Sukabungah
+    <main class="p-4 md:p-8">
+        <div class="max-w-4xl mx-auto glass-card rounded-2xl shadow-xl border border-slate-200/50 overflow-hidden fade-in">
+
+            <!-- Company & Client Info -->
+            <section class="p-6 border-b border-slate-100">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="bg-slate-900 text-white text-xs font-semibold px-3 py-1 rounded-full">01</span>
+                    <h2 class="text-lg font-semibold text-slate-800">Informasi Perusahaan & Klien</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1.5">Alamat Perusahaan</label>
+                        <textarea id="companyAddress" placeholder="Alamat Perusahaan&#10;Telp: 08xx xxxx xxxx"
+                            class="input-modern w-full p-3 border border-slate-200 rounded-xl bg-white text-slate-700 placeholder-slate-400 transition-all duration-200 resize-none" rows="4">Jl. Cibarengkok No.29, Sukabungah
 Kota Bandung - Jawa Barat 40162
 Telp : 0878 8100 0098</textarea>
-            <textarea id="clientAddress" placeholder="Tagihan Kepada:&#10;Nama Klien&#10;Alamat Klien"
-                class="p-2 border rounded" rows="4">dr. Benny Gunawan Sp.B
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1.5">Tagihan Kepada</label>
+                        <textarea id="clientAddress" placeholder="Nama Klien&#10;Alamat Klien&#10;Telp Klien"
+                            class="input-modern w-full p-3 border border-slate-200 rounded-xl bg-white text-slate-700 placeholder-slate-400 transition-all duration-200 resize-none" rows="4">dr. Benny Gunawan Sp.B
 RSUP Dr. Hasan Sadikin Bandung
 Telp : 0821-1002-0359</textarea>
-        </div>
+                    </div>
+                </div>
 
-        <div class="mb-4">
-            <label for="logoUpload" class="block text-sm font-medium text-gray-700 mb-1">Upload Logo</label>
-            <input type="file" id="logoUpload" accept="image/*"
-                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
-        </div>
+                <!-- Logo Upload -->
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-slate-600 mb-1.5">Logo Perusahaan</label>
+                    <div class="relative">
+                        <input type="file" id="logoUpload" accept="image/*" class="hidden" />
+                        <label for="logoUpload"
+                            class="flex items-center justify-center gap-2 w-full md:w-auto px-6 py-3 border-2 border-dashed border-slate-300 rounded-xl text-slate-500 hover:border-indigo-400 hover:text-indigo-500 hover:bg-indigo-50/50 transition-all duration-200 cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span class="font-medium text-sm">Upload Logo</span>
+                        </label>
+                        <p id="logoFileName" class="text-xs text-slate-400 mt-1.5"></p>
+                    </div>
+                </div>
+            </section>
 
-        <h2 class="text-xl font-semibold mb-2">Detail Invoice</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <input type="text" id="invoiceNumber" placeholder="Nomor Invoice (e.g., INV-2025-0073)"
-                class="p-2 border rounded">
-            <input type="date" id="invoiceDate" class="p-2 border rounded">
-        </div>
+            <!-- Invoice Details -->
+            <section class="p-6 border-b border-slate-100 bg-slate-50/50">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="bg-slate-900 text-white text-xs font-semibold px-3 py-1 rounded-full">02</span>
+                    <h2 class="text-lg font-semibold text-slate-800">Detail Invoice</h2>
+                </div>
+                <!-- Row 1: Invoice Number & Date -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1.5">Nomor Invoice</label>
+                        <div class="flex">
+                            <input type="text" id="invoiceNumber" placeholder="INV-2026-0001"
+                                class="input-modern flex-1 p-3 border border-slate-200 rounded-l-xl bg-white text-slate-700 placeholder-slate-400 transition-all duration-200">
+                            <button type="button" id="generateInvoiceBtn" title="Generate Nomor Otomatis"
+                                class="px-4 bg-indigo-500 hover:bg-indigo-600 text-white rounded-r-xl transition-all duration-200 flex items-center gap-2 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                <span class="text-sm font-medium">Auto</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1.5">Tanggal</label>
+                        <input type="date" id="invoiceDate"
+                            class="input-modern w-full p-3 border border-slate-200 rounded-xl bg-white text-slate-700 transition-all duration-200">
+                    </div>
+                </div>
+                <!-- Row 2: Template -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1.5">Template Invoice</label>
+                    <select id="templateSelect"
+                        class="input-modern w-full md:w-1/2 p-3 border border-slate-200 rounded-xl bg-white text-slate-700 transition-all duration-200">
+                        <option value="template.html">Classic (Hitam)</option>
+                        <option value="template-modern.html">Modern (Indigo)</option>
+                        <option value="template-corporate.html">Corporate (Blue)</option>
+                        <option value="template-emerald.html">Emerald (Green)</option>
+                        <option value="template-sunset.html">Sunset (Orange)</option>
+                        <option value="template-royal.html">Royal (Purple)</option>
+                        <option value="template-mono.html">Monochrome (Gray)</option>
+                        <option value="template-letterhead.html">Letterhead (Navy)</option>
+                    </select>
+                </div>
+            </section>
 
-        <h2 class="text-xl font-semibold mb-2">Item Tagihan</h2>
-        <div id="itemsContainer" class="mb-4 space-y-4">
-        </div>
-        <button id="addItemBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Tambah Item</button>
+            <!-- Billing Items -->
+            <section class="p-6 border-b border-slate-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-slate-900 text-white text-xs font-semibold px-3 py-1 rounded-full">03</span>
+                        <h2 class="text-lg font-semibold text-slate-800">Item Tagihan</h2>
+                    </div>
+                    <button id="addItemBtn"
+                        class="btn-hover flex items-center gap-1.5 bg-indigo-500 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-indigo-600 shadow-sm transition-all duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Tambah
+                    </button>
+                </div>
 
-        <h2 class="text-xl font-semibold mb-2 mt-6">Total & Pesan</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <input type="number" id="pembayaranAwal" placeholder="Pembayaran Awal" class="p-2 border rounded">
-            <textarea id="paymentInstructions" class="p-2 border rounded md:col-span-2" rows="4"
-                placeholder="Pesan :&#10;Silahkan transfer ke rekening :&#10;BCA 8480371683&#10;a/n Nama Anda">Silahkan transfer ke rekening :
+                <!-- Table Header -->
+                <div class="hidden md:grid grid-cols-12 gap-2 mb-2 px-2 text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                    <div class="col-span-5">Keterangan</div>
+                    <div class="col-span-2 text-center">QTY</div>
+                    <div class="col-span-2 text-center">Harga</div>
+                    <div class="col-span-2 text-right">Total</div>
+                    <div class="col-span-1"></div>
+                </div>
+
+                <div id="itemsContainer" class="space-y-3">
+                    <!-- Items will be added here -->
+                </div>
+            </section>
+
+            <!-- Total & Payment -->
+            <section class="p-6 bg-slate-50/50">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="bg-slate-900 text-white text-xs font-semibold px-3 py-1 rounded-full">04</span>
+                    <h2 class="text-lg font-semibold text-slate-800">Pembayaran</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1.5">Pembayaran Awal (DP)</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">Rp</span>
+                            <input type="number" id="pembayaranAwal" placeholder="0"
+                                class="input-modern w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl bg-white text-slate-700 placeholder-slate-400 transition-all duration-200">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1.5">Instruksi Pembayaran</label>
+                        <textarea id="paymentInstructions"
+                            class="input-modern w-full p-3 border border-slate-200 rounded-xl bg-white text-slate-700 placeholder-slate-400 transition-all duration-200 resize-none" rows="3"
+                            placeholder="Informasi rekening pembayaran">Silahkan transfer ke rekening :
 BCA 8480371683
 a/n Dodi Irfan Nurdin</textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Buttons -->
+            <section class="p-6 bg-gradient-to-r from-slate-900 to-slate-800">
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button id="previewBtn"
+                        class="btn-hover flex-1 flex items-center justify-center gap-2 bg-white text-slate-900 font-semibold px-6 py-3.5 rounded-xl hover:bg-slate-100 shadow-lg transition-all duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        Preview Invoice
+                    </button>
+                    <button id="generatePdfBtn"
+                        class="btn-hover flex-1 hidden items-center justify-center gap-2 bg-emerald-500 text-white font-semibold px-6 py-3.5 rounded-xl hover:bg-emerald-600 shadow-lg transition-all duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Download PDF
+                    </button>
+                </div>
+            </section>
         </div>
 
-        <div class="mt-6 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-            <button id="previewBtn"
-                class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 w-full sm:w-auto">Preview
-                Invoice</button>
-            <button id="generatePdfBtn"
-                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 hidden w-full sm:w-auto">Generate
-                PDF</button>
+        <!-- Invoice Preview Area -->
+        <div id="invoice-preview" class="max-w-4xl mx-auto mt-8"></div>
+    </main>
+
+    <!-- Warning Modal -->
+    <div id="warningModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full fade-in">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900">Informasi Penting</h3>
+            </div>
+            <p class="text-slate-600 mb-6 text-sm leading-relaxed">
+                Hasil ekspor PDF mungkin tidak optimal jika dilakukan melalui perangkat mobile.
+                Untuk hasil terbaik, silakan gunakan fitur ini melalui versi <strong>desktop</strong>.
+            </p>
+            <button id="closeModalBtn"
+                class="btn-hover w-full bg-slate-900 text-white font-medium py-3 rounded-xl hover:bg-slate-800 transition-all duration-200">
+                Mengerti
+            </button>
+        </div>
+    </div>
+    <!-- Validation Alert -->
+    <div id="validationAlert" class="hidden fixed top-4 left-1/2 -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-xl shadow-lg z-50 fade-in">
+        <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span id="validationMessage" class="font-medium text-sm">Mohon lengkapi field yang diperlukan</span>
         </div>
     </div>
 
-    <div id="invoice-preview" class="max-w-4xl mx-auto mt-8"></div>
-
-    <div id="warningModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg shadow-xl p-6 max-w-md w-full">
-            <h3 class="text-xl font-bold mb-4">Informasi</h3>
-            <p class="text-gray-700 mb-6">
-                Perlu diketahui bahwa hasil ekspor PDF mungkin tidak optimal jika dilakukan melalui perangkat mobile.
-                Untuk hasil terbaik dan tata letak yang sesuai, silakan akses dan gunakan fitur ini melalui versi
-                desktop.
-            </p>
-            <div class="text-right">
-                <button id="closeModalBtn"
-                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Mengerti</button>
+    <!-- History Modal -->
+    <div id="historyModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[80vh] overflow-hidden fade-in">
+            <div class="flex items-center justify-between p-4 border-b border-slate-200">
+                <h3 class="text-lg font-bold text-slate-900">Riwayat Invoice</h3>
+                <button id="closeHistoryBtn" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div id="historyList" class="p-4 overflow-y-auto max-h-[60vh] space-y-2">
+                <!-- History items will be added here -->
+                <p class="text-slate-400 text-sm text-center py-8">Belum ada riwayat invoice</p>
             </div>
         </div>
     </div>
+
+    <!-- Custom Confirm Dialog -->
+    <div id="confirmDialog" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full fade-in">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900">Hapus Item?</h3>
+            </div>
+            <p id="confirmMessage" class="text-slate-600 mb-6 text-sm leading-relaxed">
+                Apakah Anda yakin ingin menghapus item ini?
+            </p>
+            <div class="flex gap-3">
+                <button id="confirmCancelBtn" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-3 rounded-xl transition-all duration-200">
+                    Batal
+                </button>
+                <button id="confirmDeleteBtn" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-medium py-3 rounded-xl transition-all duration-200">
+                    Hapus
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
